@@ -12,10 +12,27 @@ var celsiusToFahrenheit = true;
 var labelInput = document.querySelector("label[for='inputTemperature']");
 var labelOutput = document.querySelector("label[for='outputTemperature']");
 
+// Fungsi untuk mengecek input pengguna
+function checkInput() {
+    var inputTemperature = document.getElementById("inputTemperature").value;
+  
+    if (inputTemperature === "") {
+      showAlert("<strong style='color:#F44336'>Alert!</strong> Masukkan suhu sebelum melakukan konversi.");
+      return;
+    }
+  
+    if (isNaN(inputTemperature)) {
+      showAlert("<strong>Alert!</strong> Masukkan suhu dalam bentuk angka.");
+      return;
+    }
+}
+
 // Fungsi untuk melakukan konversi suhu
 function convertTemperature() {
     var inputTemp = parseFloat(inputTemperature.value);
     var outputTemp;
+
+    checkInput()
 
     if (celsiusToFahrenheit) {
         outputTemp = (inputTemp * 9/5) + 32; // Konversi Celsius ke Fahrenheit
@@ -82,8 +99,27 @@ function onReverse() {
         `;
     }
 
-    // Melakukan reset input value
     inputTemperature.value = "";
     result.value = "";
     method.value = "";
+}
+
+// Fungsi untuk menampilkan alert box
+function showAlert(message) {
+    var overlay = document.getElementById("overlay");
+    var alertBox = document.getElementById("alertBox");
+
+    overlay.style.display = "block";
+    alertBox.innerHTML = '<span class="close-btn" onclick="closeAlert()">&times;</span>' + message;
+    alertBox.style.display = "block";
+}
+
+// Fungsi untuk menutup alert box
+function closeAlert() {
+    var alertBox = document.getElementById("alertBox");
+
+    overlay.style.display = "none";
+    alertBox.style.display = "none";
+    
+    onReset();
 }
